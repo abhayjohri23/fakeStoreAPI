@@ -11,13 +11,6 @@ import java.util.List;
 
 @Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
-    private final RestTemplateBuilder restTemplateBuilder;
-    private String getAllProductRequestURL = "https://fakestoreapi.com/products";
-    private String getProductRequestURL = "https://fakestoreapi.com/products/{id}";
-    private String createProductRequestURL = "https://fakestoreapi.com/products/{id}";
-    public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
-        this.restTemplateBuilder = restTemplateBuilder;
-    }
     @Override
     public String getAllProducts() {
         return "All products are displayed";
@@ -25,13 +18,11 @@ public class FakeStoreProductService implements ProductService{
 
     @Override
     public String getProductByID(Long productID) {
-        RestTemplate restTemplate = this.restTemplateBuilder.build();
         return "Product with ID: "+productID+" is displayed";
     }
 
     @Override
     public String createProduct() {
-        RestTemplate restTemplate = this.restTemplateBuilder.build();
         return "Product created in this service";
     }
 
