@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
     private final RestTemplateBuilder restTemplateBuilder;
     private String getAllProductRequestURL = "https://fakestoreapi.com/products";
@@ -19,24 +19,28 @@ public class FakeStoreProductService implements ProductService{
         this.restTemplateBuilder = restTemplateBuilder;
     }
     @Override
-    public List<GenericProductDTO> getAllProducts() {
-        return null;
+    public String getAllProducts() {
+        return "All products are displayed";
     }
 
     @Override
-    public GenericProductDTO getProductByID(Long productID) {
+    public String getProductByID(Long productID) {
         RestTemplate restTemplate = this.restTemplateBuilder.build();
-        return null;
+        return "Product with ID: "+productID+" is displayed";
     }
 
     @Override
-    public GenericProductDTO createProduct() {
+    public String createProduct() {
         RestTemplate restTemplate = this.restTemplateBuilder.build();
-        return null;
+        return "Product created in this service";
     }
 
     @Override
-    public GenericProductDTO deleteProductByID(Long productID) {
-        return null;
+    public String deleteProductByID(Long productID) {
+        return "Product with ID: "+ productID+"is deleted";
+    }
+    @Override
+    public String updateProductByID(Long productID){
+        return "Product with productID: "+productID+"is updated";
     }
 }
