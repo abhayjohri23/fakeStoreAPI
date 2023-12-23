@@ -3,6 +3,7 @@ import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +13,7 @@ public class FakeStoreProductService implements ProductService{
     private RestTemplateBuilder restTemplateBuilder;
     private String getProductByIDRequestURL = "https://fakestoreapi.com/products/{id}";
     private String createProductURL = "https://fakestoreapi.com/products";
+    private String deleteProductByIDURL = "https://fakestoreapi.com/products/{id}";
     public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
         this.restTemplateBuilder = restTemplateBuilder;
     }
@@ -61,8 +63,21 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public String deleteProductByID(Long productID) {
-        return "Product with ID: "+ productID+"is deleted";
+    public GenericProductDTO deleteProductByID(Long productID) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.exchange(deleteProductByIDURL, HttpMethod.DELETE,null,FakeStoreProductDTO.class,productID);
+
+        FakeStoreProductDTO response = responseEntity.getBody();
+        GenericProductDTO productDTO = new GenericProductDTO();
+
+        productDTO.setId(response.getId());
+        productDTO.setTitle(response.getTitle());
+        productDTO.setDescription(response.getDescription());
+        productDTO.setImage(response.getImage());
+        productDTO.setCategory(response.getCategory());
+        productDTO.setPrice(response.getPrice());
+
+        return productDTO;
     }
     @Override
     public String updateProductByID(Long productID){

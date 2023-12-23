@@ -28,7 +28,7 @@ public class ProductController {
         return productService.getProductByID(productID);
     }
     @DeleteMapping("{id}")
-    public String deleteProductByID(@PathVariable("id") Long productID){
+    public GenericProductDTO deleteProductByID(@PathVariable("id") Long productID){
         return productService.deleteProductByID(productID);
     }
     @PostMapping("{id}")

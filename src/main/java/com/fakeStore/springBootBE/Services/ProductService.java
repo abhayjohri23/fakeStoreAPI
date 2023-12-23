@@ -11,6 +11,6 @@ public interface ProductService {
     String getAllProducts();
     GenericProductDTO getProductByID(Long productID);
     GenericProductDTO createProduct(Product product);
-    String deleteProductByID(Long productID);
+    GenericProductDTO deleteProductByID(Long productID);
     String updateProductByID(Long productID);
 }
