@@ -1,5 +1,6 @@
 package com.fakeStore.springBootBE.Controllers;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
+import com.fakeStore.springBootBE.Models.Product;
 import com.fakeStore.springBootBE.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class ProductController {
     }
 
     @PostMapping("add")
-    public String createProduct(){
-        return productService.createProduct();
+    public GenericProductDTO createProduct(@RequestBody Product product){
+        return productService.createProduct(product);
     }
 
     @GetMapping("{id}")

@@ -1,6 +1,7 @@
 package com.fakeStore.springBootBE.Services;
 
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
+import com.fakeStore.springBootBE.Models.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class SelfProductServiceImpl implements ProductService{
     }
 
     @Override
-    public String createProduct() {
+    public GenericProductDTO createProduct(Product productDTO) {
         return null;
     }
 
