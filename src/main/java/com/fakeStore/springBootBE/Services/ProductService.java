@@ -8,6 +8,7 @@ import java.util.List;
 @Service
 public interface ProductService {
     List<GenericProductDTO> getAllProducts();
-
-    GenericProductDTO createProduct(Long productID);
+    GenericProductDTO getProductByID(Long productID);
+    GenericProductDTO createProduct();
+    GenericProductDTO deleteProductByID(Long productID);
 }
