@@ -13,7 +13,7 @@ public class SelfProductServiceImpl implements ProductService{
     }
 
     @Override
-    public String getProductByID(Long productID) {
+    public GenericProductDTO getProductByID(Long productID) {
         return null;
     }
 

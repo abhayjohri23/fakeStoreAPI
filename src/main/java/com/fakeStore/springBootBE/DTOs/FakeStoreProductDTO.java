@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FakeStoreProductDTO {
-    private Long productID;
+    private Long id;
     private String title;
     private Double price;
     private String category;        //Category shouldn't be made as enum in cases where category value is not fixed.

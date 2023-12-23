@@ -1,7 +1,7 @@
 package com.fakeStore.springBootBE.Controllers;
+import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public String getProductByID(@PathVariable("id") Long productID){
+    public GenericProductDTO getProductByID(@PathVariable("id") Long productID){
         return productService.getProductByID(productID);
     }
     @DeleteMapping("{id}")

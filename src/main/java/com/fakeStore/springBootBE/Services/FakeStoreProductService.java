@@ -6,19 +6,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
+    private RestTemplateBuilder restTemplateBuilder;
+    private String getProductByIDRequestURL = "https://fakestoreapi.com/products/{id}";
+    public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
+        this.restTemplateBuilder = restTemplateBuilder;
+    }
     @Override
     public String getAllProducts() {
         return "All products are displayed";
     }
 
     @Override
-    public String getProductByID(Long productID) {
-        return "Product with ID: "+productID+" is displayed";
+    public GenericProductDTO getProductByID(Long productID) {
+        RestTemplate restTemplate = this.restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.getForEntity(getProductByIDRequestURL, FakeStoreProductDTO.class,productID);
+
+        FakeStoreProductDTO productResponse = responseEntity.getBody();
+        GenericProductDTO genericProductDTO = new GenericProductDTO();
+
+        if (productResponse != null) {
+            genericProductDTO.setId(productResponse.getId());
+            genericProductDTO.setPrice(productResponse.getPrice());
+            genericProductDTO.setImage(productResponse.getImage());
+            genericProductDTO.setTitle(productResponse.getTitle());
+            genericProductDTO.setCategory(productResponse.getCategory());
+            genericProductDTO.setDescription(productResponse.getDescription());
+        }
+
+
+        return genericProductDTO;
     }
 
     @Override
