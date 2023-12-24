@@ -1,9 +1,12 @@
 package com.fakeStore.springBootBE.Controllers;
+import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Models.Product;
 import com.fakeStore.springBootBE.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products/")
@@ -14,7 +17,7 @@ public class ProductController {
     }
 
     @GetMapping("all")
-    public String getAllProducts(){
+    public List<GenericProductDTO> getAllProducts(){
         return productService.getAllProducts();
     }
 
@@ -32,7 +35,7 @@ public class ProductController {
         return productService.deleteProductByID(productID);
     }
     @PostMapping("{id}")
-    public String updateProductByID(@PathVariable("id") Long productID){
-        return productService.updateProductByID(productID);
+    public GenericProductDTO updateProductByID(@PathVariable("id") Long productID,@RequestBody FakeStoreProductDTO product){
+        return productService.updateProductByID(product,productID);
     }
 }

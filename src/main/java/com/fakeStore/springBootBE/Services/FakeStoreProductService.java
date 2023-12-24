@@ -8,24 +8,45 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
     private RestTemplateBuilder restTemplateBuilder;
-    private String getProductByIDRequestURL = "https://fakestoreapi.com/products/{id}";
-    private String createProductURL = "https://fakestoreapi.com/products";
-    private String deleteProductByIDURL = "https://fakestoreapi.com/products/{id}";
+    private String baseRequestURL = "https://fakestoreapi.com/products/{id}";
+    private String getProductURL = "https://fakestoreapi.com/products";
     public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
         this.restTemplateBuilder = restTemplateBuilder;
     }
     @Override
-    public String getAllProducts() {
-        return "All products are displayed";
+    public List<GenericProductDTO> getAllProducts() {
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductDTO[]> responseEntity = restTemplate.getForEntity(getProductURL,FakeStoreProductDTO[].class);
+
+        FakeStoreProductDTO[] listOfProducts = responseEntity.getBody();
+        List<GenericProductDTO> answer = new ArrayList<>();
+
+        for(FakeStoreProductDTO productResponse:listOfProducts){
+            GenericProductDTO genericProductDTO = new GenericProductDTO();
+
+            genericProductDTO.setId(productResponse.getId());
+            genericProductDTO.setPrice(productResponse.getPrice());
+            genericProductDTO.setImage(productResponse.getImage());
+            genericProductDTO.setTitle(productResponse.getTitle());
+            genericProductDTO.setCategory(productResponse.getCategory());
+            genericProductDTO.setDescription(productResponse.getDescription());
+
+            answer.add(genericProductDTO);
+        }
+
+        return answer;
     }
 
     @Override
     public GenericProductDTO getProductByID(Long productID) {
         RestTemplate restTemplate = this.restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.getForEntity(getProductByIDRequestURL, FakeStoreProductDTO.class,productID);
+        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.getForEntity(baseRequestURL, FakeStoreProductDTO.class,productID);
 
         FakeStoreProductDTO productResponse = responseEntity.getBody();
         GenericProductDTO genericProductDTO = new GenericProductDTO();
@@ -46,7 +67,7 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public GenericProductDTO createProduct(Product productDTO) {
         RestTemplate restTemplate = this.restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.postForEntity(createProductURL,productDTO, FakeStoreProductDTO.class);
+        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.postForEntity(getProductURL,productDTO, FakeStoreProductDTO.class);
 
         FakeStoreProductDTO fakeStoreProductDTO = responseEntity.getBody();
         GenericProductDTO genericProductDTO = new GenericProductDTO();
@@ -65,7 +86,7 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public GenericProductDTO deleteProductByID(Long productID) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.exchange(deleteProductByIDURL, HttpMethod.DELETE,null,FakeStoreProductDTO.class,productID);
+        ResponseEntity<FakeStoreProductDTO> responseEntity = restTemplate.exchange(baseRequestURL, HttpMethod.DELETE,null,FakeStoreProductDTO.class,productID);
 
         FakeStoreProductDTO response = responseEntity.getBody();
         GenericProductDTO productDTO = new GenericProductDTO();
@@ -80,7 +101,19 @@ public class FakeStoreProductService implements ProductService{
         return productDTO;
     }
     @Override
-    public String updateProductByID(Long productID){
-        return "Product with productID: "+productID+"is updated";
+    public GenericProductDTO updateProductByID(FakeStoreProductDTO product,Long productID){
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        FakeStoreProductDTO response = restTemplate.postForEntity(baseRequestURL,product,FakeStoreProductDTO.class,productID).getBody();
+//        FakeStoreProductDTO response = responseEntity.getBody();
+        GenericProductDTO productDTO = new GenericProductDTO();
+
+        productDTO.setId(response.getId());
+        productDTO.setTitle(response.getTitle());
+        productDTO.setDescription(response.getDescription());
+        productDTO.setImage(response.getImage());
+        productDTO.setCategory(response.getCategory());
+        productDTO.setPrice(response.getPrice());
+
+        return productDTO;
     }
 }

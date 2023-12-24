@@ -1,5 +1,6 @@
 package com.fakeStore.springBootBE.Services;
 
+import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Models.Product;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import java.util.List;
 @Service("SelfProductServiceImpl")
 public class SelfProductServiceImpl implements ProductService{
     @Override
-    public String getAllProducts() {
+    public List<GenericProductDTO> getAllProducts() {
         return null;
     }
 
@@ -28,7 +29,7 @@ public class SelfProductServiceImpl implements ProductService{
         return null;
     }
     @Override
-    public String updateProductByID(Long productID){
+    public GenericProductDTO updateProductByID(FakeStoreProductDTO product, Long productID){
         return null;
     }
 }
