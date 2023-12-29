@@ -1,9 +1,14 @@
 package com.fakeStore.springBootBE.Controllers;
+import com.fakeStore.springBootBE.DTOs.ExceptionDTO;
 import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
+import com.fakeStore.springBootBE.Exceptions.FormatException;
+import com.fakeStore.springBootBE.Exceptions.NoRecordFoundException;
 import com.fakeStore.springBootBE.Models.Product;
 import com.fakeStore.springBootBE.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +22,18 @@ public class ProductController {
     }
 
     @GetMapping("all")
-    public List<GenericProductDTO> getAllProducts(){
+    public List<GenericProductDTO> getAllProducts() throws NoRecordFoundException, FormatException {
         return productService.getAllProducts();
+    }
+
+    @ExceptionHandler(NoRecordFoundException.class)
+    public ResponseEntity<ExceptionDTO> handleExceptionForNoRecords(){
+        return new ResponseEntity(new ExceptionDTO(404,"Record is not found"), HttpStatus.ACCEPTED);
+    }
+
+    @ExceptionHandler(FormatException.class)
+    public String handleExceptionForFormatOfAPI(FormatException formatException){
+        return formatException.getMessage();
     }
 
     @PostMapping("add")

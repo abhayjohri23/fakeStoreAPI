@@ -1,6 +1,8 @@
 package com.fakeStore.springBootBE.Services;
 import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
+import com.fakeStore.springBootBE.Exceptions.FormatException;
+import com.fakeStore.springBootBE.Exceptions.NoRecordFoundException;
 import com.fakeStore.springBootBE.Models.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
@@ -13,21 +15,31 @@ import java.util.List;
 
 @Service("FakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
-    private RestTemplateBuilder restTemplateBuilder;
-    private String baseRequestURL = "https://fakestoreapi.com/products/{id}";
-    private String getProductURL = "https://fakestoreapi.com/products";
+    private final RestTemplateBuilder restTemplateBuilder;
+    private final String baseRequestURL = "https://fakestoreapi.com/products/{id}";
+    private final String getProductURL = "https://fakestoreapi.com/products";
     public FakeStoreProductService(RestTemplateBuilder restTemplateBuilder){
         this.restTemplateBuilder = restTemplateBuilder;
     }
     @Override
-    public List<GenericProductDTO> getAllProducts() {
+    public List<GenericProductDTO> getAllProducts() throws NoRecordFoundException,FormatException {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductDTO[]> responseEntity = restTemplate.getForEntity(getProductURL,FakeStoreProductDTO[].class);
 
+        if(responseEntity == null)
+            throw new NoRecordFoundException("Record not found");
+
         FakeStoreProductDTO[] listOfProducts = responseEntity.getBody();
+        if(listOfProducts == null)
+            throw new FormatException("API Format issues");
+
+        return getGenericProductDTOList(listOfProducts);
+    }
+
+    private static List<GenericProductDTO> getGenericProductDTOList(FakeStoreProductDTO[] listOfProducts) {
         List<GenericProductDTO> answer = new ArrayList<>();
 
-        for(FakeStoreProductDTO productResponse:listOfProducts){
+        for(FakeStoreProductDTO productResponse: listOfProducts){
             GenericProductDTO genericProductDTO = new GenericProductDTO();
 
             genericProductDTO.setId(productResponse.getId());
@@ -39,7 +51,6 @@ public class FakeStoreProductService implements ProductService{
 
             answer.add(genericProductDTO);
         }
-
         return answer;
     }
 
