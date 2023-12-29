@@ -30,7 +30,9 @@ public class ProductController {
     public ResponseEntity<ExceptionDTO> handleExceptionForNoRecords(){
         return new ResponseEntity(new ExceptionDTO(404,"Record is not found"), HttpStatus.ACCEPTED);
     }
-
+    //Exception DTO is used here to return the exception deserialized by the dispatcher to JSON Output: {404,Record not found}.
+    //If you want to manipulate the Postman response or the header metadata for the kind of response (Status code of Postman), return the ResponseEntity<>
+    //which has both body of the message and metadata (Eg. header data like status code) in it.
     @ExceptionHandler(FormatException.class)
     public String handleExceptionForFormatOfAPI(FormatException formatException){
         return formatException.getMessage();
