@@ -4,7 +4,7 @@ import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Exceptions.FormatException;
 import com.fakeStore.springBootBE.Exceptions.NoRecordFoundException;
-import com.fakeStore.springBootBE.Models.Product;
+import com.fakeStore.springBootBE.ModelsOrEntities.Product;
 import com.fakeStore.springBootBE.Services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class ProductController {
     }
     //Exception DTO is used here to return the exception deserialized by the dispatcher to JSON Output: {404,Record not found}.
     //If you want to manipulate the Postman response or the header metadata for the kind of response (Status code of Postman), return the ResponseEntity<>
-    //which has both body of the message and metadata (Eg. header data like status code) in it.
+    //which has both body of the message and metadata (E.g. header data like status code) in it.
     @ExceptionHandler(FormatException.class)
     public String handleExceptionForFormatOfAPI(FormatException formatException){
         return formatException.getMessage();

@@ -4,7 +4,7 @@ import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Exceptions.FormatException;
 import com.fakeStore.springBootBE.Exceptions.NoRecordFoundException;
-import com.fakeStore.springBootBE.Models.Product;
+import com.fakeStore.springBootBE.ModelsOrEntities.Product;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,6 @@ public class FakeStoreProductClientService implements ProductClientService{
             throw new NoRecordFoundException("Record not found");
 
         FakeStoreProductDTO[] listOfProducts = responseEntity.getBody();
-        listOfProducts=null;
         if(listOfProducts == null)
             throw new FormatException("API Format issues");
 

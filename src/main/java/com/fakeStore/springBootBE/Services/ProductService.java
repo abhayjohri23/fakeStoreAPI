@@ -4,7 +4,7 @@ import com.fakeStore.springBootBE.DTOs.FakeStoreProductDTO;
 import com.fakeStore.springBootBE.DTOs.GenericProductDTO;
 import com.fakeStore.springBootBE.Exceptions.FormatException;
 import com.fakeStore.springBootBE.Exceptions.NoRecordFoundException;
-import com.fakeStore.springBootBE.Models.Product;
+import com.fakeStore.springBootBE.ModelsOrEntities.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
