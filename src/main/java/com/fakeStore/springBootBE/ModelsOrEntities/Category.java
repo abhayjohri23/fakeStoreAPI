@@ -23,4 +23,7 @@ public class Category extends BaseModel{
     private List<Product> productList;
 
     //Follow: https://www.baeldung.com/jpa-joincolumn-vs-mappedby
+
+    //https://www.baeldung.com/jpa-cascade-types - Cascade types for the relations where you need cascading changes to happen b/w relations.
+    //Covered Types: PERSIST and REMOVE - Used in cascade attribute of @OneToMany/@OneToOne etc. OR @Cascade annotation
 }
