@@ -18,7 +18,7 @@ public class Category extends BaseModel{
     private String categoryName;
 
     @OneToMany(mappedBy = "category")
-    /*mappedBy - Used for the indication of the inverse or the referencing side simply should map to the owning side (i.e. Product).
+    /*mappedBy - Used for the indication of the inverse-ownership or the referencing side simply should map to the owning side (i.e. Product).
     * The value of mappedBy is the name of the association-mapping attribute (=Category class's category attribute) on the owning side. */
     private List<Product> productList;
 
